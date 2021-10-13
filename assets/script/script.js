@@ -49,7 +49,6 @@ const saveEntry = function(evtTime, evtDescription) {
     events.set(evtTime, evtDescription);
     store.set(todayStore, events);
     localStorage.setItem('day-schedule', JSON.stringify(store, replacer));
-    console.log('Saving- Time:' + evtTime + '/Description:' + evtDescription);
 };
 
 // on the button click traverse DOM to find the 
@@ -72,7 +71,6 @@ const init = function() {
         if (store.has(todayStore)) {
             events = store.get(todayStore);
         } else {
-            console.log('Adding today store to store');
             store.set(todayStore, events);
         }
     }
