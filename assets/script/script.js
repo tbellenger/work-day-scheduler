@@ -8,6 +8,7 @@ let todayShort = moment().startOf('day');
 let todayStore = moment().format('YYYYMMDD');
 
 // Utility functions for using Map data structure with JSON
+// https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map
 function replacer(key, value) {
     if(value instanceof Map) {
       return {
