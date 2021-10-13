@@ -1,16 +1,12 @@
-let times = ['07:00', '08:00', '09:00', '10:00','11:00','12:00','13:00','14:00','15:00','16:00', '17:00'];
+let times = ['7', '8', '9', '10','11','12','13','14','15','16', '17'];
 
 let currentDayEl = $('#currentDay');
 let containerEl = $('.container');
 
 let todayLong = moment().format('dddd, MMMM Do YYYY');
-let todayShort = moment().format('MM-DD-YYYY');
+let todayShort = moment().startOf('day');
+console.log(todayShort.toString());
 
-if (moment().isBefore(todayShort + ' 19:00')) {
-    console.log('before 5PM');
-} else {
-    console.log('after 5PM');
-}
 let data = {
     date: todayShort,
     events: [
@@ -22,12 +18,16 @@ let data = {
 };
 let store = JSON.parse(localStorage.getItem('day-schedule'));
 
+const saveBtnClickHandler = (event) => {
+    console.log(event);
+};
+
 const init = () => {
     if (store == null) {
         // first use so create empty store object
         store = [];
-        console.log(dummyData);
-        store.push(JSON.parse(dummyData));
+        console.log(data);
+        store.push(data);
         localStorage.setItem('day-schedule', JSON.stringify(store));
     }
     // set title day text
@@ -35,22 +35,25 @@ const init = () => {
 
     // generate the container contents
     for (let i = 0; i < times.length; i++) {
+        let cntTime = moment(times[i],"HH");
         let category = '';
-        if (moment().isBefore(todayShort + ' ' + times[i])) {
-            category = "class='future'";
-        } else if (moment().isAfter(todayShort + ' ' + times[i])) {
-            category = "class='past'";
+        if (moment().isBefore(cntTime)) {
+            category = "class='description future'";
+        } else if (moment().isAfter(cntTime)) {
+            category = "class='description past'";
         } else {
-            category = "class='present'";
+            category = "class='description present'";
         }
-        let hourEl = $("<div class='hour'></div>").text(times[i]);
-        let txtAreaEl = $("<textarea " + category + " name='desc' id='description' cols='100%' rows='3'></textarea>").text('Event');
+        let hourEl = $("<div class='hour'></div>").text(cntTime.format("hA"));
+        let txtAreaEl = $("<textarea " + category + " name='desc' cols='100%' rows='3' data-time='" + times[i] + "'></textarea>").text('Event');
         let btnEl = $("<button class='saveBtn'></button>").text('Save');
         let rowEl = $("<div class='row'></div>").append(hourEl).append(txtAreaEl).append(btnEl);
         let timeBlckEl = $("<div class='time-block'></div>").append(rowEl);
         containerEl.append(timeBlckEl);
     }
 
+    // add event handlers
+    containerEl.on('click','.saveBtn', saveBtnClickHandler);
 };
 
 
