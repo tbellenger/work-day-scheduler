@@ -5,30 +5,66 @@ let containerEl = $('.container');
 
 let todayLong = moment().format('dddd, MMMM Do YYYY');
 let todayShort = moment().startOf('day');
+let todayStore = moment().format('YYYYMMDD');
 console.log(todayShort.toString());
 
-let data = {
-    date: todayShort,
-    events: [
-        {
-            time: "7AM",
-            desc: "Event description"
-        }
-    ]
-};
-let store = JSON.parse(localStorage.getItem('day-schedule'));
+// Utility functions for using Map data structure with JSON
+function replacer(key, value) {
+    if(value instanceof Map) {
+      return {
+        dataType: 'Map',
+        value: Array.from(value.entries()), // or with spread: value: [...value]
+      };
+    } else {
+      return value;
+    }
+  }
 
-const saveBtnClickHandler = (event) => {
-    console.log(event);
+  function reviver(key, value) {
+    if(typeof value === 'object' && value !== null) {
+      if (value.dataType === 'Map') {
+        return new Map(value.value);
+      }
+    }
+    return value;
+  }
+
+
+let data = new Map();
+let events = new Map();
+data.set(todayStore, events);
+console.log(JSON.stringify(data, replacer));
+
+let store = JSON.parse(localStorage.getItem('day-schedule'), reviver);
+
+const saveEntry = function(evtTime, evtDescription) {
+    events = store.get(todayStore);
+    if (events == null) {
+        events = new Map();
+    }
+    events.set(evtTime, evtDescription);
+    store.set(todayStore, events);
+    localStorage.setItem('day-schedule', JSON.stringify(store, replacer));
+    console.log('Saving- Time:' + evtTime + '/Description:' + evtDescription);
 };
 
-const init = () => {
+const saveBtnClickHandler = function() {
+    let descEl = $(this).parent().find("textarea");
+    saveEntry(descEl.data('time'), descEl.val());
+};
+
+const init = function() {
     if (store == null) {
-        // first use so create empty store object
-        store = [];
-        console.log(data);
-        store.push(data);
-        localStorage.setItem('day-schedule', JSON.stringify(store));
+        // first use so create empty store object with today
+        localStorage.setItem('day-schedule', JSON.stringify(data, replacer));
+    } else {
+        // find today if there else create today
+        if (store.has(todayStore)) {
+            console.log('Store has today store');
+        } else {
+            console.log('Adding today store to store');
+            store.set(todayStore, events);
+        }
     }
     // set title day text
     currentDayEl.textcontent = todayLong;
@@ -57,5 +93,5 @@ const init = () => {
 };
 
 
-init();
 
+init();
