@@ -61,6 +61,7 @@ const init = function() {
         // find today if there else create today
         if (store.has(todayStore)) {
             console.log('Store has today store');
+            events = store.get(todayStore);
         } else {
             console.log('Adding today store to store');
             store.set(todayStore, events);
@@ -71,6 +72,12 @@ const init = function() {
 
     // generate the container contents
     for (let i = 0; i < times.length; i++) {
+        // check if we stored data in this row
+        let contents = '';
+        if (events.has(parseInt(times[i]))) {
+            console.log('loading data for event' + times[i] + ' from store');
+            contents = events.get(parseInt(times[i]));
+        }
         let cntTime = moment(times[i],"HH");
         let category = '';
         if (moment().isBefore(cntTime)) {
@@ -81,7 +88,7 @@ const init = function() {
             category = "class='description present'";
         }
         let hourEl = $("<div class='hour'></div>").text(cntTime.format("hA"));
-        let txtAreaEl = $("<textarea " + category + " name='desc' cols='100%' rows='3' data-time='" + times[i] + "'></textarea>").text('Event');
+        let txtAreaEl = $("<textarea " + category + " name='desc' cols='100%' rows='3' data-time='" + times[i] + "'></textarea>").text(contents);
         let btnEl = $("<button class='saveBtn'></button>").text('Save');
         let rowEl = $("<div class='row'></div>").append(hourEl).append(txtAreaEl).append(btnEl);
         let timeBlckEl = $("<div class='time-block'></div>").append(rowEl);
