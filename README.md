@@ -3,6 +3,8 @@ Work Day Scheduler is a simple calendar app for scheduling your workday. It allo
 
 The current hour is displayed in red, with past entries in grey and future entries in green
 
+The page will refresh on the hour to keep the display current.
+
 ## Screenshot
 ![screen cast of the site in action](./assets/images/Work-Day-Scheduler.gif)
 
