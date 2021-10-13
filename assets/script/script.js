@@ -86,13 +86,14 @@ const init = function() {
             contents = events.get(parseInt(times[i]));
         }
         let cntTime = moment(times[i],"HH");
+        let cntNextTime = moment(times[i] + 1, "HH");
         let category = '';
         if (moment().isBefore(cntTime)) {
             category = "class='description future'";
-        } else if (moment().isAfter(cntTime)) {
-            category = "class='description past'";
-        } else {
+        } else if (moment().isAfter(cntTime) && moment().isBefore(cntNextTime)) {
             category = "class='description present'";
+        } else {
+            category = "class='description past'";
         }
         let hourEl = $("<div class='hour'></div>").text(cntTime.format("hA"));
         let txtAreaEl = $("<textarea " + category + " name='desc' cols='100%' rows='3' data-time='" + times[i] + "'></textarea>").text(contents);
