@@ -75,7 +75,7 @@ const init = function() {
         }
     }
     // set title day text
-    currentDayEl.textcontent = todayLong;
+    currentDayEl.text(todayLong);
 
     // generate the container contents
     for (let i = 0; i < times.length; i++) {
