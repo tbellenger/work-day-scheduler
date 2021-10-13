@@ -6,7 +6,6 @@ let containerEl = $('.container');
 let todayLong = moment().format('dddd, MMMM Do YYYY');
 let todayShort = moment().startOf('day');
 let todayStore = moment().format('YYYYMMDD');
-console.log(todayShort.toString());
 
 // Utility functions for using Map data structure with JSON
 function replacer(key, value) {
@@ -29,14 +28,18 @@ function replacer(key, value) {
     return value;
   }
 
-
+// this is the data structure that is stored
+// it has a map with the date as key and the events as the value
+// the events is another map with the time as key and description as value
 let data = new Map();
 let events = new Map();
 data.set(todayStore, events);
-console.log(JSON.stringify(data, replacer));
 
 let store = JSON.parse(localStorage.getItem('day-schedule'), reviver);
 
+// take the event time and description and add them to the 
+// events map inside the value where the key is todays date
+// update localstorage with the new data
 const saveEntry = function(evtTime, evtDescription) {
     events = store.get(todayStore);
     if (events == null) {
@@ -48,11 +51,16 @@ const saveEntry = function(evtTime, evtDescription) {
     console.log('Saving- Time:' + evtTime + '/Description:' + evtDescription);
 };
 
+// on the button click traverse DOM to find the 
+// text area. Use the time stored in the dataset of 
+// textarea and the value to save the entry
 const saveBtnClickHandler = function() {
     let descEl = $(this).parent().find("textarea");
     saveEntry(descEl.data('time'), descEl.val());
 };
 
+// initialize localstorage where it is required and 
+// build the page with hours from 7am to 5pm
 const init = function() {
     if (store == null) {
         // first use so create empty store object with today
@@ -61,7 +69,6 @@ const init = function() {
     } else {
         // find today if there else create today
         if (store.has(todayStore)) {
-            console.log('Store has today store');
             events = store.get(todayStore);
         } else {
             console.log('Adding today store to store');
@@ -99,7 +106,5 @@ const init = function() {
     // add event handlers
     containerEl.on('click','.saveBtn', saveBtnClickHandler);
 };
-
-
 
 init();
