@@ -89,17 +89,33 @@ const init = function() {
         let cntNextTime = moment(parseInt(times[i]) + 1, "HH");
         let category = '';
         if (moment().isBefore(cntTime)) {
-            category = "class='description future'";
+            category = "description future";
         } else if (moment().isAfter(cntTime) && moment().isBefore(cntNextTime)) {
-            category = "class='description present'";
+            category = "description present";
         } else {
-            category = "class='description past'";
+            category = "description past";
         }
-        let hourEl = $("<div class='hour'></div>").text(cntTime.format("hA"));
-        let txtAreaEl = $("<textarea " + category + " name='desc' cols='100%' rows='3' data-time='" + times[i] + "'></textarea>").text(contents);
-        let btnEl = $("<button class='saveBtn'></button>").html('&#x1F5AB;');
-        let rowEl = $("<div class='row'></div>").append(hourEl).append(txtAreaEl).append(btnEl);
-        let timeBlckEl = $("<div class='time-block'></div>").append(rowEl);
+        let hourEl = $("<div></div>")
+          .addClass('hour')
+          .text(cntTime.format("hA"));
+        let txtAreaEl = $("<textarea>")
+          .addClass(category)
+          .attr('name','desc')
+          .attr('cols','100%')
+          .attr('rows','3')
+          .data('time', parseInt(times[i]))
+          .text(contents);
+        let btnEl = $("<button></button>")
+          .addClass('saveBtn')
+          .html('&#x1F5AB;');
+        let rowEl = $("<div></div>")
+          .addClass('row')
+          .append(hourEl)
+          .append(txtAreaEl)
+          .append(btnEl);
+        let timeBlckEl = $("<div></div>")
+          .addClass('time-block')
+          .append(rowEl);
         containerEl.append(timeBlckEl);
     }
 
