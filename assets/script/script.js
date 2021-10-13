@@ -85,16 +85,10 @@ const init = function() {
             console.log('loading data for event' + times[i] + ' from store');
             contents = events.get(parseInt(times[i]));
         }
-        let cntTime = moment(times[i],"HH");
+        let cntTime = moment(parseInt(times[i]),"HH");
         let cntNextTime = moment(parseInt(times[i]) + 1, "HH");
         let category = '';
-        console.log(times[i]);
-        console.log(cntTime);
-        console.log(cntNextTime);
-        console.log('curr time is after:' + moment().isAfter(cntTime));
-        console.log('curr time is before next:' + moment().isBefore(cntNextTime));
         if (moment().isBefore(cntTime)) {
-            console.log('before is true')
             category = "class='description future'";
         } else if (moment().isAfter(cntTime) && moment().isBefore(cntNextTime)) {
             category = "class='description present'";
