@@ -77,6 +77,18 @@ const init = function() {
     // set title day text
     currentDayEl.text(todayLong);
 
+    // add event handlers
+    containerEl.on('click','.saveBtn', saveBtnClickHandler);
+
+    updateContainerContents();
+
+
+  };
+
+const updateContainerContents = function() {
+
+    // empty the container befoer we fill it up
+    containerEl.empty();
     // generate the container contents
     for (let i = 0; i < times.length; i++) {
         // check if we stored data in this row
@@ -119,8 +131,11 @@ const init = function() {
         containerEl.append(timeBlckEl);
     }
 
-    // add event handlers
-    containerEl.on('click','.saveBtn', saveBtnClickHandler);
+    // redraw the container contents at the next hour mark to move
+    // 'now' box forward
+    // calculate the millis until the next hour and add 1 second
+    setInterval(updateContainerContents,
+      moment().endOf('hour').format('x') - moment().format('x') + 1000);
 };
 
 init();
