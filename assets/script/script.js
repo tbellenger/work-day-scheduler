@@ -57,6 +57,7 @@ const init = function() {
     if (store == null) {
         // first use so create empty store object with today
         localStorage.setItem('day-schedule', JSON.stringify(data, replacer));
+        store = data;
     } else {
         // find today if there else create today
         if (store.has(todayStore)) {
