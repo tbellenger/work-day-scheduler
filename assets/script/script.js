@@ -97,7 +97,7 @@ const init = function() {
         }
         let hourEl = $("<div class='hour'></div>").text(cntTime.format("hA"));
         let txtAreaEl = $("<textarea " + category + " name='desc' cols='100%' rows='3' data-time='" + times[i] + "'></textarea>").text(contents);
-        let btnEl = $("<button class='saveBtn'></button>").text('Save');
+        let btnEl = $("<button class='saveBtn'></button>").html('&#x1F5AB;');
         let rowEl = $("<div class='row'></div>").append(hourEl).append(txtAreaEl).append(btnEl);
         let timeBlckEl = $("<div class='time-block'></div>").append(rowEl);
         containerEl.append(timeBlckEl);
