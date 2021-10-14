@@ -109,9 +109,9 @@ const updateContainerContents = function() {
     let hourEl = $("<div></div>")
       .addClass('hour')
       .addClass('col-2')
-      .css('display', 'flex')
-      .css('justify-content', 'center')
-      .css('align-items', 'center')
+      .addClass('d-flex')
+      .addClass('justify-content-center')
+      .addClass('align-items-center')
       .text(cntTime.format("hA"));
     let txtAreaEl = $("<textarea>")
       .addClass(category)
