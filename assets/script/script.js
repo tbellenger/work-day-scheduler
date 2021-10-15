@@ -139,7 +139,7 @@ const updateContainerContents = function() {
   // redraw the container contents at the next hour mark to move
   // 'now' box forward
   // calculate the millis until the next hour and add 1 second
-  setInterval(updateContainerContents,
+  setTimeout(updateContainerContents,
     moment().endOf('hour').format('x') - moment().format('x') + 1000);
 };
 
